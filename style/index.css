@@ -1,0 +1,113 @@
+.card {
+  width: 50%;
+  min-height: 350px;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid white;
+  border-radius: 10px;
+  box-shadow: 0px 0.2em 2.5em #c4c4c4;
+  transform: scale(1.025), translateZ(100px), ;
+  perspective: 100px;
+}
+
+.card .form {
+  flex: 1;
+  width: 100%;
+  position: relative;
+}
+
+.header {
+  flex: 1;
+  color: aliceblue;
+  font-size: 20px;
+  padding-top: 10px;
+  padding-right: auto;
+  text-align: center;
+}
+
+.header > h1 {
+  margin-bottom: 10px;
+}
+
+.card .form > input[type="button"] {
+  display: block;
+  background-color: transparent;
+  border: 1px solid wheat;
+  box-shadow: 2px 2px 2px 5px solid wheat;
+  color: aliceblue;
+  width: 20%;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 11%;
+  margin-left: 40%;
+  height: 40px;
+}
+
+.card .form > div {
+  color: red;
+  font-weight: bold;
+  font-style: italic;
+  margin-left: 10%;
+}
+
+.card .form > input[type="text"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  margin-bottom: 10px;
+  color: white;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid red;
+  width: 70%;
+  height: 40px;
+  font-size: x-large;
+}
+
+.card .form > input[type="text"]:focus {
+  border-style: none;
+  outline: none;
+  border-bottom: 1px solid red;
+}
+
+.label {
+  position: absolute;
+  top: 20px;
+  left: 15%;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.label-focus {
+  animation-name: label-tra;
+  animation-duration: .2s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation-fill-mode: forwards;
+  position: absolute;
+}
+
+@keyframes label-tra {
+  0% {
+    top: 20px;
+    left: 15%;
+  }
+  100% {
+    top: -10px;
+    left: 15%;
+  }
+}
+
+.header ~ span {
+    color: red;
+    margin-bottom: 15px;
+    background-color: black;
+    padding: 5px;
+}
