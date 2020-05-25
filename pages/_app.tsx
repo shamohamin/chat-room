@@ -1,6 +1,7 @@
 import App from "next/app";
 import Head from "next/head";
 import Layout from "../components/layout";
+import Wrapper from "../lib/index";
 
 class CustomApp extends App {
   static async getInitialProps(prop: any) {
@@ -50,4 +51,4 @@ class CustomApp extends App {
   }
 }
 
-export default CustomApp;
+export default Wrapper.withRedux(CustomApp);
