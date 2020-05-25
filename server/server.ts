@@ -1,5 +1,6 @@
 import next from "next";
 import express, { Express, Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import { socket } from "./socket";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -16,6 +17,7 @@ app
     const server: Express = express();
     server.use(bodyParser.json());
     server.use(express.json());
+    server.use(cookieParser());
     server.use(cors());
     await socket();
 
@@ -41,27 +43,42 @@ app
     server.get("/api/users/:id", async (_req: Request, _res: Response) => {
       const id = _req.params.id;
       console.log("user with id : " + id);
-      try{
+      try {
         await UserWorker.connect();
         const worker: UserWorker<IUser> = new UserWorker<IUser>(UserModel);
         let _user = await worker.findOne(mongoose.Types.ObjectId(id));
         await UserWorker.close();
         _res.status(200).json(_user);
-      }catch(ex){
+      } catch (ex) {
         console.log("error not found : " + ex);
-        _res.status(404).send(ex)
+        _res.status(404).send(ex);
       }
     });
 
-    server.get('/api/users',async (_req: Request, _res: Response) => {
-      console.log('helloooooo');
-      try{
+    server.get("/api/users", async (_req: Request, _res: Response) => {
+      console.log("helloooooo");
+      try {
         await UserWorker.connect();
         let users = await new UserWorker(UserModel).findAll();
         await UserWorker.close();
         _res.status(200).send(users);
-      }catch(ex){
+      } catch (ex) {
         _res.status(500).send(ex);
+      }
+    });
+
+    server.post("/api/login", async (_req: Request, _res: Response) => {
+      try {
+        const { email } = _req.body ;
+        await UserWorker.connect() ;
+        let user = (await new UserWorker<IUser>(UserModel).findByEmail(
+          email as string
+        )) as IUser;
+        _res.cookie("user_id", user.id) ;
+        await UserWorker.close() ;
+        _res.status(200).send(user) ;
+      } catch (ex) {
+        _res.send(500).send("authenticate failed email not found" + ex);
       }
     });
 
