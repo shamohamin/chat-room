@@ -12,12 +12,12 @@ const app = next({ dev });
 const handel = app.getRequestHandler();
 app
   .prepare()
-  .then((): any => {
+  .then(async () => {
     const server: Express = express();
     server.use(bodyParser.json());
     server.use(express.json());
     server.use(cors());
-    socket();
+    await socket();
 
     server.get(/^\/(?!api).*/, (_req: Request, _res: Response) => {
       return handel(_req, _res);
@@ -25,9 +25,7 @@ app
 
     server.post("/api/users", async (_req: Request, _res: Response) => {
       const user: IUser = _req.body as IUser;
-      console.log("body :" + _req.body);
       console.log(user);
-      console.log("hello inside endpoint");
       try {
         await UserWorker.connect();
         let worker: UserWorker<IUser> = new UserWorker<IUser>(UserModel);
@@ -36,12 +34,11 @@ app
         console.log(_user);
         _res.status(200).send(_user);
       } catch (ex) {
-        _res.status(500).send("error while saving users" + ex);
+        _res.status(500).send(`error while saving users : ${ex}`);
       }
     });
 
     server.get("/api/users/:id", async (_req: Request, _res: Response) => {
-      console.log('babe ')
       const id = _req.params.id;
       console.log("user with id : " + id);
       try{
@@ -57,7 +54,7 @@ app
     });
 
     server.get('/api/users',async (_req: Request, _res: Response) => {
-      console.log('hello');
+      console.log('helloooooo');
       try{
         await UserWorker.connect();
         let users = await new UserWorker(UserModel).findAll();
