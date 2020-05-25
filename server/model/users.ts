@@ -1,16 +1,17 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+export interface IMessage extends Document {
+  body: string | Buffer;
+  to?: any;
+  from?: any;
+}
+
 export interface IUser extends Document {
   email: string;
   avatar?: any;
   name: string;
   contacts: IUser[];
-  messages: any[];
-}
-
-export interface IMessage extends Document {
-  body: string | Buffer;
-  to: any;
+  messages: IMessage[];
 }
 
 interface IRead {
@@ -54,8 +55,10 @@ export class UserWorker<T extends Document> implements IWrite<T>, IRead {
         useNewUrlParser: true,
       },
       (err) => {
-        if (err) console.log("error on database" + err);
-        else {
+        if (err) {
+          console.log("error on database" + err);
+          throw `Can't connect to Database with error: ${err}`;
+        } else {
           console.log("connection to database is ok");
         }
       }
@@ -112,10 +115,10 @@ export class UserWorker<T extends Document> implements IWrite<T>, IRead {
   public async findAll(): Promise<T[]> {
     return new Promise((resolve, rejects) => {
       this.Model.find({}, (err: Error, docs: T[]) => {
-          if(err) rejects(err)
-          else{
-              resolve(docs);
-          }
+        if (err) rejects(err);
+        else {
+          resolve(docs);
+        }
       });
     });
   }
