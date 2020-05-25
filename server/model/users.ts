@@ -112,6 +112,21 @@ export class UserWorker<T extends Document> implements IWrite<T>, IRead {
     });
   }
 
+  public findByEmail(email: string): Promise<IUser> {
+    return new Promise((resolve, reject) => {
+      this.Model.findOne({ email })
+        .populate("messages")
+        .exec((err: Error | null, doc: Document) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          } else {
+            resolve(doc as IUser);
+          }
+        });
+    });
+  }
+
   public async findAll(): Promise<T[]> {
     return new Promise((resolve, rejects) => {
       this.Model.find({}, (err: Error, docs: T[]) => {
