@@ -1,0 +1,5 @@
+export const types = {
+  LOGIN: "LOGIN",
+  SENDMESSAGE: "SENDMESSAGE",
+  AUTHENTICATE: "AUTHENTICATE"
+};
