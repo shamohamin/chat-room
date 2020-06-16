@@ -1,6 +1,6 @@
 # chat-room
 
-under maintenance 
+This repo presents realtime chatting on the browser using React and Websocket in node js which you can upload a file, photos, etc.
 
 ## start
 
